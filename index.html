@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KALLARI TV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="tv-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CHANNEL 07</p>
+        <h1>KALARI TV</h1>
+      </div>
+      <div class="status" aria-live="polite"><span class="status-light"></span> LIVE TRAINING</div>
+    </header>
+
+    <section class="screen-frame" aria-label="KALLARI game screen">
+      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <div class="scanlines" aria-hidden="true"></div>
+    </section>
+
+    <section class="controls">
+      <div class="readout"><span>LEVEL</span><strong id="levelValue">01</strong></div>
+      <div class="readout"><span>SCORE</span><strong id="scoreValue">0000</strong></div>
+      <div class="readout"><span>BEST</span><strong id="bestValue">0000</strong></div>
+      <div class="readout wide"><span id="message">Drag the student, then release.</span><strong id="dialogue" lang="ml">ശരി മോനേ, നോക്കാം.</strong></div>
+      <button id="resetButton" type="button">RETRY</button>
+      <button id="newRunButton" type="button">NEW RUN</button>
+      <button id="debugButton" type="button">F3 DEBUG</button>
+      <button id="crtButton" type="button">CRT ON</button>
+    </section>
+  </main>
+  <script src="js/dialogue.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/collision.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
