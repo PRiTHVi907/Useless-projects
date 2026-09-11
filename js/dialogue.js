@@ -21,6 +21,13 @@ const ashanDialogue = {
   ]
 };
 
+function getRageLevel(ashanRage) {
+  if (ashanRage <= 20) return 'CALM';
+  if (ashanRage <= 40) return 'AMUSED';
+  if (ashanRage <= 60) return 'MOCKING';
+  if (ashanRage <= 80) return 'ANNOYED';
+  return 'FURIOUS';
+}
 const recentAshanLines = [];
 
 function chooseAshanLine(category, failureCount) {

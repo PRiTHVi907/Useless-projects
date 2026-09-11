@@ -29,7 +29,8 @@ const game = {
   levelData: createLevel(1),
   player: createPlayer(),
   lastTime: 0,
-  elapsedTime: 0
+  elapsedTime: 0,
+  ashanRage: 0
 };
 
 function createPlayer() {
@@ -44,7 +45,9 @@ function createLevel(level) {
 }
 
 function setDialogue(category) {
-  const selectedDialogue = chooseAshanLine(category, game.failureCount);
+  const rageLevel = getRageLevel(game.ashanRage);
+  const dialogueCategory = ['ANNOYED', 'FURIOUS'].includes(rageLevel) && category !== 'win' ? 'irritated' : category;
+  const selectedDialogue = chooseAshanLine(dialogueCategory, game.failureCount);
   dialogue.textContent = selectedDialogue.text;
   voiceManager.speak(selectedDialogue, category === 'far');
 }
@@ -115,12 +118,14 @@ function finishAttempt() {
   effects.resultFreeze = 0.18;
   if (outcome === 'short') {
     game.failureCount += 1;
+    game.ashanRage = Math.min(game.ashanRage + 12, 100);
     message.textContent = 'KALLARIK PURATH';
     setDialogue('short');
     addDust(landingX, GROUND_Y, '#f2a65a', 12);
     triggerShake(5);
   } else if (outcome === 'win') {
     game.failureCount = 0;
+    game.ashanRage = 0;
     game.score += 100;
     message.textContent = 'YOU WIN!';
     setDialogue('win');
@@ -132,6 +137,7 @@ function finishAttempt() {
     triggerShake(6);
   } else {
     game.failureCount += 1;
+    game.ashanRage = Math.min(game.ashanRage + 18, 100);
     message.textContent = 'ASHANTE NENJATH';
     setDialogue('far');
     addImpact(game.levelData.ashanX, GROUND_Y - 40, 1.8);
@@ -157,6 +163,7 @@ function resetAttempt(nextLevel = false) {
 function startNewRun() {
   game.level = 1;
   game.score = 0;
+  game.ashanRage = 0;
   game.failureCount = 0;
   game.levelData = createLevel(1);
   resetAttempt(false);
@@ -251,15 +258,17 @@ function drawAshan() {
   const breathing = Math.sin(game.elapsedTime * 2.2) * 2;
   const sway = Math.sin(game.elapsedTime * 0.8) * 1.2;
   const blink = Math.sin(game.elapsedTime * 3.3) > 0.92 ? 0.3 : 0;
-  const angry = Math.min(game.failureCount * 0.16, 1);
+  const rageNorm = Math.min(game.ashanRage / 100, 1);
+  const eyebrowAngle = Math.floor(rageNorm * 12);
   context.fillStyle = '#17221f';
   context.fillRect(x - 23, GROUND_Y - 80 + breathing + sway, 46, 52);
-  context.fillStyle = angry > 0.6 ? '#9d3f38' : '#dc5b49';
+  context.fillStyle = rageNorm > 0.6 ? '#9d3f38' : '#dc5b49';
   context.fillRect(x - 19, GROUND_Y - 84 + breathing + sway, 38, 55);
   context.fillStyle = '#e2a673';
   context.fillRect(x - 19, GROUND_Y - 122 + breathing + sway, 38, 34);
   context.fillStyle = '#17221f';
-  context.fillRect(x - 12, GROUND_Y - 108 + breathing - angry * 3, 7, 5); context.fillRect(x + 5, GROUND_Y - 108 + breathing - angry * 3, 7, 5);
+  context.fillRect(x - 12, GROUND_Y - 108 + breathing + sway - rageNorm * 3, 7, 5); context.fillRect(x + 5, GROUND_Y - 108 + breathing + sway - rageNorm * 3, 7, 5);
+  context.fillRect(x - 14 + eyebrowAngle, GROUND_Y - 119 + breathing + sway, 6, 2); context.fillRect(x + 8 - eyebrowAngle, GROUND_Y - 119 + breathing + sway, 6, 2);
   context.fillRect(x - 14, GROUND_Y - 116 + breathing + sway, 28, 5);
   context.fillRect(x - 13, GROUND_Y - 126 + breathing + sway, 26, 8);
   context.fillStyle = '#f3dfb5'; context.fillRect(x - 5, GROUND_Y - 96 + breathing, 10, 3);
