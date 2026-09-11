@@ -94,7 +94,6 @@ The current prototype includes:
 - a predictable swinging training bag from level 2 onward
 - layered Kalari architecture, lamps, training details, sand texture, and stones
 - procedural pixel-art-style player and Ashan silhouettes with idle, aiming, and flying poses
-- optional Malayalam Ashan voice through a dedicated `VoiceManager`
 
 ### Physics used by the prototype
 
@@ -166,9 +165,3 @@ Test it by winning level 1, advancing to level 2, and watching the bag swing bef
 The renderer in [`js/game.js`](js/game.js) now draws the arena in background, midground, and foreground layers. It includes roof beams, earthen interior walls, lamps with a small flicker, training furniture, sand texture, stones, and footprints. The player and Ashan use original procedural pixel-art-style silhouettes with dark outlines, simple shading, expressive faces, breathing motion, and state-aware aiming/flying poses.
 
 Test this stage by starting training, checking the scene at rest, dragging the student to see the crouched aiming pose, and releasing to see the airborne pose. The art remains deliberately procedural so the physics and MATLAB-compatible coordinate model stay easy to inspect; sprite sheets and richer animation can be added later without changing the game rules.
-
-## Current Stage: Malayalam Voice System
-
-The voice layer is split into [`js/voice.js`](js/voice.js) and [`js/dialogue.js`](js/dialogue.js). Dialogue lines carry text and emotion metadata, avoid the previous five lines, and pass through a cooldown-aware `VoiceManager`. The manager selects only a browser voice whose language starts with `ml`; it never substitutes an English voice while claiming Malayalam pronunciation. Browser speech is unlocked only after the first user action, and the `VOICE ON/OFF` control persists its preference with `localStorage`.
-
-Use F3 after starting training to inspect the voice status. A compatible browser voice reports `READY: ml-IN` or `SPEAKING: ml-IN`; otherwise the status reports `NO MALAYALAM VOICE` and the text dialogue continues normally. This keeps voice optional and prevents unsupported browser speech from affecting gameplay.

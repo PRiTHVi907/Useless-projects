@@ -30,7 +30,8 @@ const game = {
   player: createPlayer(),
   lastTime: 0,
   elapsedTime: 0,
-  ashanRage: 0
+  ashanRage: 0,
+  trajectoryVisible: localStorage.getItem('kallari-trajectory-visible') !== 'false'
 };
 
 function createPlayer() {
@@ -48,8 +49,7 @@ function setDialogue(category) {
   const rageLevel = getRageLevel(game.ashanRage);
   const dialogueCategory = ['ANNOYED', 'FURIOUS'].includes(rageLevel) && category !== 'win' ? 'irritated' : category;
   const selectedDialogue = chooseAshanLine(dialogueCategory, game.failureCount);
-  dialogue.textContent = selectedDialogue.text;
-  voiceManager.speak(selectedDialogue, category === 'far');
+  dialogue.textContent = selectedDialogue;
 }
 
 function pointerPosition(event) {
@@ -59,7 +59,6 @@ function pointerPosition(event) {
 
 function startAim(event) {
   if (game.state !== 'READY' || effects.resultFreeze > 0) return;
-  voiceManager.unlock();
   const pointer = pointerPosition(event);
   const distance = Math.hypot(pointer.x - game.player.x, pointer.y - game.player.y);
   if (distance > 55) return;
@@ -71,7 +70,6 @@ function startAim(event) {
 }
 
 function beginTraining() {
-  voiceManager.unlock();
   game.state = 'READY';
   titleOverlay.classList.add('is-hidden');
   message.textContent = 'Drag the student, then release.';
@@ -285,9 +283,11 @@ function drawPlayer() {
   const crouchDepth = Math.min(chargeAmount * 6, 8);
   const bodyY = player.y + (crouched ? crouchDepth : breathing);
   if (game.state === 'AIMING') {
-    context.strokeStyle = '#dc5b49'; context.lineWidth = 4;
-    context.beginPath(); context.moveTo(player.x, player.y); context.lineTo(game.aim.x, game.aim.y); context.stroke();
-    drawPreview();
+    if (game.trajectoryVisible) {
+      context.strokeStyle = '#dc5b49'; context.lineWidth = 4;
+      context.beginPath(); context.moveTo(player.x, player.y); context.lineTo(game.aim.x, game.aim.y); context.stroke();
+      drawPreview();
+    }
   }
   context.save(); context.translate(player.x, bodyY); context.rotate(airborne ? Math.atan2(player.vy, Math.max(player.vx, 1)) * 0.18 : 0);
   context.fillStyle = '#17221f'; context.fillRect(-15, -10, 30, 31);
@@ -314,7 +314,7 @@ function drawDebug() {
   if (!game.debug) return;
   context.fillStyle = '#17221f'; context.fillRect(18, 18, 280, 126);
   context.fillStyle = '#f3dfb5'; context.font = '12px Space Mono';
-  context.fillText(`STATE: ${game.state}`, 30, 40); context.fillText(`POS: ${game.player.x.toFixed(1)}, ${game.player.y.toFixed(1)}`, 30, 58); context.fillText(`VEL: ${game.player.vx.toFixed(1)}, ${game.player.vy.toFixed(1)}`, 30, 76); context.fillText(`WIND: ${game.levelData.wind.toFixed(1)}`, 30, 94); context.fillText(`OBSTACLE: ${game.levelData.obstacle ? 'BAG' : 'NONE'}`, 30, 112); context.fillText(`VOICE: ${voiceManager.status}`, 30, 130);
+  context.fillText(`STATE: ${game.state}`, 30, 40); context.fillText(`POS: ${game.player.x.toFixed(1)}, ${game.player.y.toFixed(1)}`, 30, 58); context.fillText(`VEL: ${game.player.vx.toFixed(1)}, ${game.player.vy.toFixed(1)}`, 30, 76); context.fillText(`WIND: ${game.levelData.wind.toFixed(1)}`, 30, 94); context.fillText(`OBSTACLE: ${game.levelData.obstacle ? 'BAG' : 'NONE'}`, 30, 112);
 }
 
 function render() {
@@ -353,11 +353,11 @@ document.getElementById('crtButton').addEventListener('click', (event) => {
   document.body.classList.toggle('crt-off');
   event.currentTarget.textContent = document.body.classList.contains('crt-off') ? 'CRT OFF' : 'CRT ON';
 });
-document.getElementById('voiceButton').addEventListener('click', (event) => {
-  voiceManager.toggle();
-  event.currentTarget.textContent = voiceManager.enabled ? 'VOICE ON' : 'VOICE OFF';
-  voiceManager.unlock();
+document.getElementById('trajectoryButton').addEventListener('click', (event) => {
+  game.trajectoryVisible = !game.trajectoryVisible;
+  localStorage.setItem('kallari-trajectory-visible', String(game.trajectoryVisible));
+  event.currentTarget.textContent = game.trajectoryVisible ? 'TRAJECTORY ON' : 'TRAJECTORY OFF';
 });
 document.addEventListener('keydown', (event) => { if (event.key === 'F3') { event.preventDefault(); game.debug = !game.debug; } });
-document.getElementById('voiceButton').textContent = voiceManager.enabled ? 'VOICE ON' : 'VOICE OFF';
+document.getElementById('trajectoryButton').textContent = game.trajectoryVisible ? 'TRAJECTORY ON' : 'TRAJECTORY OFF';
 updateReadout(); setDialogue('ready'); requestAnimationFrame(gameLoop);
