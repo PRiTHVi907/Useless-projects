@@ -7,6 +7,23 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <section id="titleOverlay" class="title-overlay" aria-labelledby="titleHeading">
+    <div class="boot-mark">CHANNEL 07 <span>●</span></div>
+    <p class="title-kicker">A KALARI PHYSICS EXPERIENCE</p>
+    <h2 id="titleHeading">KALLARIK PURATH</h2>
+    <p class="title-or">OR</p>
+    <h3>ASHANTE NENJATH</h3>
+    <p class="title-copy">A ridiculous launch, one angry Ashan, and absolutely no sensible braking system.</p>
+    <div class="title-actions">
+      <button id="startButton" type="button">START TRAINING</button>
+      <button id="howToButton" type="button">HOW TO PLAY</button>
+    </div>
+    <div id="howToPanel" class="how-to" hidden>
+      <strong>DRAG</strong> the student to aim.<br>
+      <strong>RELEASE</strong> to launch.<br>
+      Land in the green zone to win. Too short is <b>KALLARIK PURATH</b>. Too far is <b>ASHANTE NENJATH</b>.
+    </div>
+  </section>
   <main class="tv-shell">
     <header class="topbar">
       <div>
@@ -36,6 +53,7 @@
   <script src="js/physics.js"></script>
   <script src="js/collision.js"></script>
   <script src="js/effects.js"></script>
+  <script src="js/obstacles.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>

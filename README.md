@@ -90,6 +90,8 @@ The current prototype includes:
 - modular Ashan dialogue with escalating reactions after repeated failures
 - persistent best score and highest-level tracking with `localStorage`
 - touch-ready pointer input and a `NEW RUN` control
+- CRT-style title/boot screen with Start Training and How to Play
+- a predictable swinging training bag from level 2 onward
 
 ### Physics used by the prototype
 
@@ -122,6 +124,12 @@ The game uses simple pixel-like geometry first. Dialogue, procedural chaos, rich
 4. Add procedural challenges.
 5. Add particles, sound, camera movement, and CRT polish.
 
+## Current Stage: Title And Boot Flow
+
+The browser now starts in a `TITLE` state. The title overlay gates gameplay until `START TRAINING` is pressed, and `HOW TO PLAY` explains the drag, release, and three landing outcomes. Once started, the existing game enters `READY` and uses the same physics loop as before.
+
+Test this stage by reloading the page, opening and closing the guide, pressing Start Training, and confirming that a drag from the student enters the flying state. The title screen is intentionally lightweight: the next presentation stage can add a longer intro sequence and generated audio without changing the projectile model.
+
 ## Current Checkpoint: Ashan And Progression
 
 The dialogue data is in [`js/dialogue.js`](js/dialogue.js), while [`js/game.js`](js/game.js) decides which category to request. Three consecutive failures add irritated lines to the random pool. A successful landing clears the failure streak, awards 100 points, and changes the result button to `NEXT LEVEL`.
@@ -143,3 +151,9 @@ The final prototype also includes level-based wind, shrinking safe zones, impact
 You should be able to drag the student, preview the path, launch, receive one of the three outcomes, retry failures, progress after a win, see the score increase, and toggle CRT effects. F3 exposes state, position, velocity, and wind so the equations can be inspected while playing.
 
 The original MATLAB Phase 0 material remains below as a parallel learning path.
+
+## Current Stage: Interactive Obstacle
+
+[`js/obstacles.js`](js/obstacles.js) now owns a simple hanging training bag. Its position uses a sinusoidal swing, and the player collision applies a readable velocity reflection rather than pretending to be a full rigid-body solver. The obstacle appears from level 2 onward and is visible before launch, so its timing can be learned.
+
+Test it by winning level 1, advancing to level 2, and watching the bag swing before launching. Toggle F3 to confirm the obstacle is reported, then deliberately intersect the bag and look for a small dust burst and screen shake.

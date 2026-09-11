@@ -5,6 +5,7 @@ const scoreValue = document.getElementById('scoreValue');
 const bestValue = document.getElementById('bestValue');
 const message = document.getElementById('message');
 const dialogue = document.getElementById('dialogue');
+const titleOverlay = document.getElementById('titleOverlay');
 
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
@@ -17,7 +18,7 @@ function storedNumber(key) {
 }
 
 const game = {
-  state: 'READY',
+  state: 'TITLE',
   level: 1,
   score: 0,
   bestScore: storedNumber('kallari-best-score'),
@@ -27,7 +28,8 @@ const game = {
   aim: { x: 0, y: 0 },
   levelData: createLevel(1),
   player: createPlayer(),
-  lastTime: 0
+  lastTime: 0,
+  elapsedTime: 0
 };
 
 function createPlayer() {
@@ -38,7 +40,7 @@ function createLevel(level) {
   const safeStart = 510 + Math.min(level - 1, 5) * 20;
   const safeWidth = Math.max(120, 170 - (level - 1) * 8);
   const wind = level < 5 ? 0 : (level % 2 === 0 ? 18 : -14);
-  return { safeStart, safeEnd: safeStart + safeWidth, ashanX: safeStart + safeWidth + 105, wind };
+  return { safeStart, safeEnd: safeStart + safeWidth, ashanX: safeStart + safeWidth + 105, wind, obstacle: createObstacle(level) };
 }
 
 function setDialogue(category) {
@@ -62,6 +64,13 @@ function startAim(event) {
   canvas.setPointerCapture(event.pointerId);
 }
 
+function beginTraining() {
+  game.state = 'READY';
+  titleOverlay.classList.add('is-hidden');
+  message.textContent = 'Drag the student, then release.';
+  setDialogue('ready');
+}
+
 function updateAim(event) {
   if (!game.player.dragging) return;
   game.aim = pointerPosition(event);
@@ -79,8 +88,15 @@ function releaseAim(event) {
 }
 
 function update(deltaTime) {
+  game.elapsedTime += deltaTime;
+  updateObstacle(game.levelData.obstacle, deltaTime, game.elapsedTime);
   if (game.state !== 'FLYING') return;
   advanceProjectile(game.player, deltaTime, GRAVITY, game.levelData.wind);
+
+  if (collideWithObstacle(game.player, game.levelData.obstacle)) {
+    addDust(game.player.x, game.player.y, '#f2a65a', 8);
+    triggerShake(7);
+  }
 
   if (game.player.y + game.player.radius >= GROUND_Y) {
     game.player.y = GROUND_Y - game.player.radius;
@@ -122,6 +138,7 @@ function resetAttempt(nextLevel = false) {
   }
   game.player = createPlayer();
   effects.particles = [];
+  game.elapsedTime = 0;
   game.state = 'READY';
   message.textContent = 'Drag the student, then release.';
   document.getElementById('resetButton').textContent = 'RETRY';
@@ -162,6 +179,7 @@ function drawScene() {
   context.fillStyle = '#244137';
   context.font = 'bold 14px Space Mono';
   context.fillText('SAFE ZONE', game.levelData.safeStart + 12, GROUND_Y + 55);
+  drawObstacle(context, game.levelData.obstacle);
   drawAshan();
   drawPlayer();
 }
@@ -201,9 +219,9 @@ function drawPreview() {
 
 function drawDebug() {
   if (!game.debug) return;
-  context.fillStyle = '#17221f'; context.fillRect(18, 18, 250, 90);
+  context.fillStyle = '#17221f'; context.fillRect(18, 18, 250, 108);
   context.fillStyle = '#f3dfb5'; context.font = '12px Space Mono';
-  context.fillText(`STATE: ${game.state}`, 30, 40); context.fillText(`POS: ${game.player.x.toFixed(1)}, ${game.player.y.toFixed(1)}`, 30, 58); context.fillText(`VEL: ${game.player.vx.toFixed(1)}, ${game.player.vy.toFixed(1)}`, 30, 76); context.fillText(`WIND: ${game.levelData.wind.toFixed(1)}`, 30, 94);
+  context.fillText(`STATE: ${game.state}`, 30, 40); context.fillText(`POS: ${game.player.x.toFixed(1)}, ${game.player.y.toFixed(1)}`, 30, 58); context.fillText(`VEL: ${game.player.vx.toFixed(1)}, ${game.player.vy.toFixed(1)}`, 30, 76); context.fillText(`WIND: ${game.levelData.wind.toFixed(1)}`, 30, 94); context.fillText(`OBSTACLE: ${game.levelData.obstacle ? 'BAG' : 'NONE'}`, 30, 112);
 }
 
 function render() {
@@ -226,6 +244,12 @@ function gameLoop(timestamp) {
 canvas.addEventListener('pointerdown', startAim);
 canvas.addEventListener('pointermove', updateAim);
 canvas.addEventListener('pointerup', releaseAim);
+document.getElementById('startButton').addEventListener('click', beginTraining);
+document.getElementById('howToButton').addEventListener('click', (event) => {
+  const panel = document.getElementById('howToPanel');
+  panel.hidden = !panel.hidden;
+  event.currentTarget.textContent = panel.hidden ? 'HOW TO PLAY' : 'CLOSE GUIDE';
+});
 document.getElementById('resetButton').addEventListener('click', () => {
   const won = game.state === 'RESULT' && message.textContent === 'YOU WIN!';
   resetAttempt(won);

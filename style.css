@@ -22,6 +22,20 @@ body {
   font-family: 'Space Mono', monospace;
 }
 
+.title-overlay { position: fixed; z-index: 5; inset: 0; display: grid; place-content: center; justify-items: center; padding: 24px; text-align: center; background: #101715; animation: bootReveal 1.8s steps(5, end) both; }
+.title-overlay.is-hidden { display: none; }
+.boot-mark { margin-bottom: 22px; color: var(--amber); font-size: 0.7rem; letter-spacing: 0.24em; }
+.boot-mark span { color: var(--red); text-shadow: 0 0 10px var(--red); }
+.title-kicker { margin: 0 0 12px; color: #8ca397; font-size: clamp(0.62rem, 1.5vw, 0.82rem); letter-spacing: 0.16em; }
+.title-overlay h2, .title-overlay h3 { margin: 0; font: 800 clamp(3rem, 10vw, 7.8rem)/0.82 'Barlow Condensed', sans-serif; letter-spacing: 0.035em; color: var(--paper); text-shadow: 4px 4px 0 #7e4339; }
+.title-overlay h3 { color: var(--red); text-shadow: 4px 4px 0 #4a2e2a; }
+.title-or { margin: 18px 0 12px; color: var(--amber); font-size: 0.8rem; letter-spacing: 0.4em; }
+.title-copy { max-width: 500px; margin: 24px 0; color: #b8c6b3; font-size: 0.78rem; line-height: 1.7; }
+.title-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.title-actions button { min-width: 150px; padding: 13px 16px; }
+.how-to { max-width: 500px; margin-top: 22px; padding: 16px; border: 1px solid #52635b; color: #b8c6b3; font-size: 0.72rem; line-height: 1.8; }
+.how-to strong, .how-to b { color: var(--amber); }
+
 .tv-shell { width: min(1120px, 94vw); }
 .topbar, .controls { display: flex; align-items: center; gap: 18px; }
 .topbar { justify-content: space-between; padding: 0 4px 14px; }
@@ -44,4 +58,5 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; image-
 button { border: 1px solid #728c7d; padding: 10px 13px; color: var(--paper); background: #30443b; font: 700 0.68rem 'Space Mono', monospace; cursor: pointer; }
 button:hover, button:focus-visible { border-color: var(--amber); color: var(--amber); }
 @keyframes crtFlicker { 0%, 100% { opacity: 0.14; } 50% { opacity: 0.2; } }
+@keyframes bootReveal { 0% { opacity: 0; filter: contrast(2) brightness(3); } 18% { opacity: 0.35; } 20% { opacity: 0.05; } 23%, 100% { opacity: 1; filter: none; } }
 @media (max-width: 640px) { .status { display: none; } .controls { gap: 12px; } .readout { padding-right: 10px; } button { flex: 1; } }
