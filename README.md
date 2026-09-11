@@ -12,6 +12,8 @@ Landing outcomes:
 
 Open [`index.html`](index.html) in Chrome, Edge, or Firefox. No build tools or external libraries are required.
 
+Orelse open the link : [text](https://useless-projects-nine.vercel.app/)
+
 ## Features
 
 - Drag-to-aim and release-to-launch projectile physics
@@ -62,8 +64,7 @@ js/collision.js        Landing outcome classification
 js/obstacles.js        Swinging training bag behavior
 js/effects.js          Dust particles and screen shake
 js/dialogue.js         Ashan dialogue and rage-aware line selection
-config/                MATLAB configuration retained for the learning path
-main.m                 MATLAB entry point retained for the learning path
+
 ```
 
 The browser game is the main active project. The MATLAB files remain as a small reference implementation for experimenting with projectile motion.
