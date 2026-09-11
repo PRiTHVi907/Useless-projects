@@ -1,4 +1,4 @@
-const effects = { particles: [], shake: 0 };
+const effects = { particles: [], shake: 0, resultFreeze: 0 };
 
 function addDust(x, y, color, count = 16) {
   for (let index = 0; index < count; index += 1) {
@@ -11,10 +11,16 @@ function addDust(x, y, color, count = 16) {
   }
 }
 
+function addImpact(x, y, intensity = 1) {
+  addDust(x, y, '#f2a65a', Math.floor(24 * intensity));
+  triggerShake(8 * intensity);
+}
+
 function triggerShake(amount) { effects.shake = Math.max(effects.shake, amount); }
 
 function updateEffects(deltaTime) {
   effects.shake = Math.max(0, effects.shake - deltaTime * 22);
+  effects.resultFreeze = Math.max(0, effects.resultFreeze - deltaTime);
   effects.particles = effects.particles.filter((particle) => {
     particle.life -= deltaTime;
     particle.vy += 180 * deltaTime;

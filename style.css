@@ -57,6 +57,7 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; image-
 .readout.wide strong { color: var(--paper); font-size: 0.78rem; font-weight: 400; }
 button { border: 1px solid #728c7d; padding: 10px 13px; color: var(--paper); background: #30443b; font: 700 0.68rem 'Space Mono', monospace; cursor: pointer; }
 button:hover, button:focus-visible { border-color: var(--amber); color: var(--amber); }
+.voice-status { color: #8ca397; font-size: 0.6rem; }
 @keyframes crtFlicker { 0%, 100% { opacity: 0.14; } 50% { opacity: 0.2; } }
 @keyframes bootReveal { 0% { opacity: 0; filter: contrast(2) brightness(3); } 18% { opacity: 0.35; } 20% { opacity: 0.05; } 23%, 100% { opacity: 1; filter: none; } }
 @media (max-width: 640px) { .status { display: none; } .controls { gap: 12px; } .readout { padding-right: 10px; } button { flex: 1; } }
