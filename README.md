@@ -6,6 +6,8 @@
 
 <video src="video.mp4" controls="controls" style="max-width: 100%;"></video>
 
+[Click here to access the video directly](video.mp4)
+
 # KALARI TV
 
 KALARI TV is a retro Malayalam CRT arcade game about launching a Kalari student toward a safe training zone. Aim, charge, and release with the right power while managing gravity, wind, obstacles, and timing.
