@@ -1,6 +1,6 @@
 # TinkerHub Forked Repo;
 
-['FORKED REPO'](https://github.com/PRiTHVi907/kalari_TV)
+[FORKED REPO](https://github.com/PRiTHVi907/kalari_TV)
 
 # KALARI TV
 
@@ -14,9 +14,9 @@ Landing outcomes:
 
 ## Run The Game
 
-Open [`index.html`](index.html) in Chrome, Edge, or Firefox. No build tools or external libraries are required.
+Open [index.html](index.html) in Chrome, Edge, or Firefox. No build tools or external libraries are required.
 
-Orelse open the link : ['KALARI_TV'](https://useless-projects-nine.vercel.app/)
+Orelse open the link : [KALARI_TV](https://useless-projects-nine.vercel.app/)
 
 ## Features
 
