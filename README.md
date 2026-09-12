@@ -4,9 +4,7 @@
 
 # Video Demonstration
 
-<video src="video.mp4" controls="controls" style="max-width: 100%;"></video>
-
-[Click here to access the video directly](video.mp4)
+[Click here to access the video directly](https://drive.google.com/file/d/1ZbRDb9dje7lLyvOrVZsfYayJzj9TQzwz/view?usp=drive_link)
 
 # KALARI TV
 
