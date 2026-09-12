@@ -4,7 +4,7 @@
 
 # Video Demonstration
 
-[VIDEO](useless_vid.mp4)
+[VIDEO](video.mp4)
 
 # KALARI TV
 
