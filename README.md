@@ -1,3 +1,7 @@
+# TinkerHub Forked Repo;
+
+['FORKED REPO'](https://github.com/PRiTHVi907/kalari_TV)
+
 # KALARI TV
 
 KALARI TV is a retro Malayalam CRT arcade game about launching a Kalari student toward a safe training zone. Aim, charge, and release with the right power while managing gravity, wind, obstacles, and timing.
@@ -12,7 +16,7 @@ Landing outcomes:
 
 Open [`index.html`](index.html) in Chrome, Edge, or Firefox. No build tools or external libraries are required.
 
-Orelse open the link : [text](https://useless-projects-nine.vercel.app/)
+Orelse open the link : [KALARI_TV]](https://useless-projects-nine.vercel.app/)
 
 ## Features
 
